@@ -161,6 +161,31 @@ public class Practice {
    * @return true if all reachable vertices hold odd values, false otherwise
    */
   public boolean allOdd(Vertex<Integer> vertex) {
+    if (vertex == null) {
+      return true;
+    }
+
+    Set<Vertex<Integer>> visited = new HashSet<>();
+    return dfsAllOdd(vertex, visited);
+  }
+
+  private boolean dfsAllOdd(Vertex<Integer> vertex, Set<Vertex<Integer>> visited) {
+    if (visited.contains(vertex)) {
+      return true;
+    }
+
+    visited.add(vertex);
+
+    if (vertex.data % 2 == 0) {
+      return false;
+    }
+
+    for (Vertex<Integer> neighbor : vertex.neighbors) {
+      if (!dfsAllOdd(neighbor, visited)) {
+        return false;
+      }
+    }
+
     return true;
   }
 
@@ -179,6 +204,32 @@ public class Practice {
    * @throws NullPointerException if either start or end is null.
    */
   public boolean hasStrictlyIncreasingPath(Vertex<Integer> start, Vertex<Integer> end) {
+    if (start == null || end == null) {
+      throw new NullPointerException();
+    }
+
+    Set<Vertex<Integer>> visited = new HashSet<>();
+    return dfsIncreasing(start, end, visited);
+  }
+
+  private boolean dfsIncreasing(Vertex<Integer> current,
+                                Vertex<Integer> end,
+                                Set<Vertex<Integer>> visited) {
+    if (current == end) {
+      return true;
+    }
+
+    visited.add(current);
+
+    for (Vertex<Integer> neighbor : current.neighbors) {
+      if (!visited.contains(neighbor)
+          && neighbor.data > current.data) {
+        if (dfsIncreasing(neighbor, end, visited)) {
+          return true;
+        }
+      }
+    }
+
     return false;
   }
 }
