@@ -119,7 +119,34 @@ public class Practice {
    * @return A set containing all reachable leaf vertices, or an empty set if vertex is null.
    */
   public <T> Set<Vertex<T>> leaves(Vertex<T> vertex) {
-    return null;
+    Set<Vertex<T>> result = new HashSet<>();
+
+    if (vertex == null) {
+      return result;
+    }
+
+    Set<Vertex<T>> visited = new HashSet<>();
+    dfsLeaves(vertex, visited, result);
+
+    return result;
+  }
+
+  private <T> void dfsLeaves(Vertex<T> vertex, Set<Vertex<T>> visited,
+                              Set<Vertex<T>> result) {
+    if (visited.contains(vertex)) {
+      return;
+    }
+
+    visited.add(vertex);
+
+    if (vertex.neighbors.isEmpty()) {
+      result.add(vertex);
+      return;
+    }
+
+    for (Vertex<T> neighbor : vertex.neighbors) {
+      dfsLeaves(neighbor, visited, result);
+    }
   }
 
 
