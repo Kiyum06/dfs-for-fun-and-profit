@@ -83,7 +83,28 @@ public class Practice {
    * @return The maximum value of any reachable vertex, or Integer.MIN_VALUE if vertex is null.
    */
   public int max(Vertex<Integer> vertex) {
-    return -1;
+    if (vertex == null) {
+      return Integer.MIN_VALUE;
+    }
+
+    int max = vertex.data;
+    Set<Vertex<Integer>> visited = new HashSet<>();
+    return dfsMax(vertex, visited, max);
+  }
+
+  private int dfsMax(Vertex<Integer> vertex, Set<Vertex<Integer>> visited, int max) {
+    if (visited.contains(vertex)) {
+      return max;
+    }
+
+    visited.add(vertex);
+    max = Math.max(max, vertex.data);
+
+    for (Vertex<Integer> neighbor : vertex.neighbors) {
+      max = dfsMax(neighbor, visited, max);
+    }
+
+    return max;
   }
 
   /**
